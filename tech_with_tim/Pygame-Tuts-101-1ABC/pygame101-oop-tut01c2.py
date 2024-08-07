@@ -6,15 +6,15 @@
 
 import pygame
 
+
 class GfxObject:
-    id         : str = None                 # each object needs a string key
-    pos_size   : pygame.Rect = None         # tuple (x,y, width, height)
-    attributes : dict = None                # dictionary of attributes {att:value}
-    surface    : pygame.Surface = None      # pygame.Surface graphical repr.
-    key_binds  : dict = None                # dictionary of keys {keyId:pygame.key_value}
+    id: str = None  # each object needs a string key
+    pos_size: pygame.Rect = None  # tuple (x,y, width, height)
+    attributes: dict = None  # dictionary of attributes {att:value}
+    surface: pygame.Surface = None  # pygame.Surface graphical repr.
+    key_binds: dict = None  # dictionary of keys {keyId:pygame.key_value}
 
-
-    def __init__(self,stringId:str,x:int,y:int,w:int,h:int):
+    def __init__(self, stringId: str, x: int, y: int, w: int, h: int):
         """
           constructor __init__(stringId:str,x:int,y:int,w:int,h:int)
 
@@ -24,38 +24,38 @@ class GfxObject:
 
         """
         self.id = stringId
-        self.pos_size = pygame.Rect(x,y,w,h)
-        self.attributes = {} # custom associative array of attributes {attrib:value}
+        self.pos_size = pygame.Rect(x, y, w, h)
+        self.attributes = {}  # custom associative array of attributes {attrib:value}
         self.key_binds = {}  # custom associative array of key binds {keyString : []}
 
-    def width(self)->int:
+    def width(self) -> int:
         """
          getter : Surface width
         """
         return self.pos_size[2]
 
-    def height(self)->int:
+    def height(self) -> int:
         """
          getter : Surface height
         """
         return self.pos_size[3]
 
-    def addAttribute(self,anAtribute:str,aValue:any):
+    def addAttribute(self, anAtribute: str, aValue: any):
         """
           addAttribute(anAtribute:str,aValue:any)
           example addAttribute("alive",True)
         """
-        self.attributes[anAttribute] = aValue
+        self.attributes[anAttribute:str] = aValue
 
-    def setAttribute(self,anAtribute:str,aValue:any):
+    def setAttribute(self, anAtribute: str, aValue: any):
         """
           setAttribute(anAtribute:str,aValue:any)
           example addAttribute("alive",False)
           WARNING! Will create if DNE
         """
-        self.attributes[anAttribute] = aValue
+        self.attributes[anAttribute:str] = aValue
 
-    def getAttribute(self,anAttribute:str)->any: #None if dne
+    def getAttribute(self, anAttribute: str) -> any:  #None if dne
         """
         safe Getter of an attribute value.
         Returns attribute value or None if no matching attribute/no value set
@@ -65,32 +65,32 @@ class GfxObject:
         else:
             return None
 
-    def setSurface(self,newSurface:pygame.Surface):
+    def setSurface(self, newSurface: pygame.Surface):
         """
           Set the GfxObjects.surface attribute
         """
         self.surface = newSurface
 
-    def update(self,dx,dy):
+    def update(self, dx, dy):
         """
          moves the GfxObject by updating its (x,y) position
         """
-        (x,y,w,h) = self.pos_size
+        (x, y, w, h) = self.pos_size
         #print(x,y,w,h)
-        self.pos_size = pygame.Rect(x+dx,y+dy,w,h)
+        self.pos_size = pygame.Rect(x + dx, y + dy, w, h)
 
-    def draw(self,win:pygame.Surface):
+    def draw(self, win: pygame.Surface):
         """
          draws the Surface "image" at positon (x,y)
         """
-        win.blit(self.surface,self.pos_size[:2]) # (x,y)=(pos_size[0],pos_size[1])
+        win.blit(self.surface, self.pos_size[:2])  # (x,y)=(pos_size[0],pos_size[1])
 
     def getKeyIdStrings(self):
         "genrates keyIdStr "
-        keyIdStrings = ["left","right","up","down","jump","fire","fire2","use","duck"]
+        keyIdStrings = ["left", "right", "up", "down", "jump", "fire", "fire2", "use", "duck"]
         return keyIdStrings
 
-    def add_key_bind(self,keyIdStr:str,pygameKey:int) -> bool:
+    def add_key_bind(self, keyIdStr: str, pygameKey: int) -> bool:
         """
           Injects keyIdStr into dictionary key_binds
           keyIdStr : String key - eg "left"
@@ -101,7 +101,7 @@ class GfxObject:
         """
         #convert keyIdStr to all lower-case and strip white spaces
         keyIdStr = keyIdStr.lower()
-        keyIdStr.replace(" ","")
+        keyIdStr.replace(" ", "")
 
         validKeyIds = self.getKeyIdStrings()
 
@@ -111,14 +111,14 @@ class GfxObject:
             return False
 
         # does the keyIdStr exist ion the dictionary yet?
-        if not keyIdStr in self.key_binds: #dne so create empty list for key binds
+        if not keyIdStr in self.key_binds:  #dne so create empty list for key binds
             self.key_binds[keyIdStr] = []
 
         # add key constant to keybind list
         self.key_binds[keyIdStr].append(pygameKey)
         return True
 
-    def wasPressed(self,keyId,keys:pygame.key)->bool:
+    def wasPressed(self, keyId, keys: pygame.key) -> bool:
         """
          helper function returns True if
            keyId matches some bind key in the list
@@ -134,47 +134,43 @@ class GfxObject:
 
         return pressed
 
-    def handleKeyMovement(self,keys:pygame.key,speed:int=5):
+    def handleKeyMovement(self, keys: pygame.key, speed: int = 5):
         dx = 0
         dy = 0
 
         for keyId in self.key_binds:
-            if keyId == "left" and self.wasPressed(keyId,keys):
+            if keyId == "left" and self.wasPressed(keyId, keys):
                 dx = -1 * speed
 
-            if keyId == "right" and self.wasPressed(keyId,keys):
+            if keyId == "right" and self.wasPressed(keyId, keys):
                 dx = 1 * speed
 
-            if keyId == "up" and self.wasPressed(keyId,keys):
-                dy = -1 * speed
-
-            if keyId == "down" and self.wasPressed(keyId,keys):
-                dy = 1 * speed
-
-            if keyId == "jump" and self.wasPressed(keyId,keys):
+            if keyId == "up" and self.wasPressed(keyId, keys):
+                print("up pressed .. override to implement")
+            if keyId == "down" and self.wasPressed(keyId, keys):
+                print("down pressed .. override to implement")
+            if keyId == "jump" and self.wasPressed(keyId, keys):
                 print("jump pressed .. override to implement")
-            if keyId == "fire2" and self.wasPressed(keyId,keys):
+            if keyId == "fire2" and self.wasPressed(keyId, keys):
                 print("fire2 pressed .. override to implement")
-            if keyId == "duck" and self.wasPressed(keyId,keys):
+            if keyId == "duck" and self.wasPressed(keyId, keys):
                 print("fire2 pressed .. override to implement")
-            if keyId == "use" and self.wasPressed(keyId,keys):
+            if keyId == "use" and self.wasPressed(keyId, keys):
                 print("use pressed .. override to implement")
 
-
-        return dx,dy
+        return dx, dy
 
 
 class World:
     # treat all attributes as private.
     # not using __win etc as annoying!
-    win = None        # the pygame.Surface that is the main window
-    run = True        # flag controlling the main pygame while loop
-    delay_ms = None   # pause in ms used by pygame.time.delay() in main loop
+    win = None  # the pygame.Surface that is the main window
+    run = True  # flag controlling the main pygame while loop
+    delay_ms = None  # pause in ms used by pygame.time.delay() in main loop
 
-    gfxObjects = None # dictionary of graphic objects that loop() will render
+    gfxObjects = None  # dictionary of graphic objects that loop() will render
 
-
-    def __init__(self,width:int,height:int,caption:str,delay_ms:int=100):
+    def __init__(self, width: int, height: int, caption: str, delay_ms: int = 100):
         """
         constructor:
          __init__(width:int,height:int,caption:str,delay_ms:int=100)
@@ -184,14 +180,14 @@ class World:
          set delay in ms (default 100) to pause between frames of main loop
 
         """
-        self.start(width,height,caption)
+        self.start(width, height, caption)
         self.delay_ms = delay_ms
 
-        self.gfxObjects = {} # store gfx objects with an id
-                             # Add fgxObjects with addObject
-                             # Remove with popObject
+        self.gfxObjects = {}  # store gfx objects with an id
+        # Add fgxObjects with addObject
+        # Remove with popObject
 
-    def addObject(self,anObject:GfxObject):
+    def addObject(self, anObject: GfxObject):
         """
          adds a GfxObject to the dictionary gfxObjects
          used by loop() to iterate over .update() and .draw()
@@ -199,7 +195,7 @@ class World:
         """
         self.gfxObjects[anObject.id] = anObject
 
-    def popObject(self,anObjectId:str):
+    def popObject(self, anObjectId: str):
         """
          will be implemented later - safety code required so can be queued
           for removal and only executed after iterable dictionary loop is done.
@@ -207,7 +203,7 @@ class World:
         """
         pass
 
-    def start(self,width:int,height:int,caption:str)->pygame.Surface:
+    def start(self, width: int, height: int, caption: str) -> pygame.Surface:
         """
         private function start(width:int,height:int,caption:str)->pygame.Surface
         returns a pygame.Surface window
@@ -218,7 +214,7 @@ class World:
         #initi pygame
         pygame.init()
 
-        size_tuple = (width,height)
+        size_tuple = (width, height)
         self.win = pygame.display.set_mode(size_tuple)
 
         pygame.display.set_caption(caption)
@@ -235,11 +231,9 @@ class World:
 
         for id in self.gfxObjects:
             # event hamdlers will be called here ... this will control dx,dy of update()
-            dx,dy = self.gfxObjects[id].handleKeyMovement(keys,speed=5)
-            self.gfxObjects[id].update(dx,dy)     # automatically move right to test...
+            dx, dy = self.gfxObjects[id].handleKeyMovement(keys, speed=5)
+            self.gfxObjects[id].update(dx, dy)  # automatically move right to test...
             self.gfxObjects[id].draw(self.win)  # draw on the world window Surface
-
-
 
     def main_loop(self):
         """
@@ -253,7 +247,7 @@ class World:
 
         while self.run:
             #clear current frame
-            self.win.fill((0,0,0))
+            self.win.fill((0, 0, 0))
 
             pygame.time.delay(self.delay_ms)
 
@@ -269,12 +263,13 @@ class World:
     def stop(self):
         pygame.quit()
 
-def drawRedFigure(width,height)->pygame.Surface:
+
+def drawRedFigure(width, height) -> pygame.Surface:
     # draw rectangle and grab it from surface2
     # in practice this would be an image
-    surface2=pygame.Surface((width,height))
-    pygame.draw.rect(surface2,(255,0,0),(0,0,width,height))
-    pygame.draw.line(surface2,(0,0,0),(15,15),(30,15),3)
+    surface2 = pygame.Surface((width, height))
+    pygame.draw.rect(surface2, (255, 0, 0), (0, 0, width, height))
+    pygame.draw.line(surface2, (0, 0, 0), (15, 15), (30, 15), 3)
 
     return surface2
 
@@ -284,31 +279,29 @@ def main():
     setup main game and populate game loop here using the World object
 
     """
-    world=World(800,600,"world-oop101c") #SVGA : 800x600
+    world = World(800, 600, "world-oop101c")  #SVGA : 800x600
 
-    redFig = GfxObject("redFigure",50,50,30,40) #create red rectangle object
+    redFig = GfxObject("redFigure", 50, 50, 30, 40)  #create red rectangle object
 
-    redFig.setSurface(drawRedFigure(redFig.width(),redFig.height()))
+    redFig.setSurface(drawRedFigure(redFig.width(), redFig.height()))
 
     #print(redFig.getKeyIdStrings())
 
-##    #add key binds for gfxObject - note A and left arrow!
-    redFig.add_key_bind("left",pygame.K_a)
-    redFig.add_key_bind("left",pygame.K_LEFT)
-    redFig.add_key_bind("right",pygame.K_d)
-    redFig.add_key_bind("up",pygame.K_w)
-    redFig.add_key_bind("down",pygame.K_s)
-    redFig.add_key_bind("jump",pygame.K_SPACE)
-    redFig.add_key_bind("fire",pygame.K_RETURN)
+    ##    #add key binds for gfxObject - note A and left arrow!
+    redFig.add_key_bind("left", pygame.K_a)
+    redFig.add_key_bind("left", pygame.K_LEFT)
+    redFig.add_key_bind("right", pygame.K_d)
+    redFig.add_key_bind("up", pygame.K_w)
+    redFig.add_key_bind("down", pygame.K_s)
+    redFig.add_key_bind("jump", pygame.K_SPACE)
+    redFig.add_key_bind("fire", pygame.K_RETURN)
 
+    world.addObject(redFig)  # insert it into the world
 
-
-    world.addObject(redFig)                      # insert it into the world
-
-    world.main_loop()                            # run main game loop until
-                                                 # quit selected...
+    world.main_loop()  # run main game loop until
+    # quit selected...
     world.stop()
+
 
 if __name__ == '__main__':
     main()
-
