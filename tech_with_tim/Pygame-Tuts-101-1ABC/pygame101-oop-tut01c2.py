@@ -8,11 +8,11 @@ import pygame
 
 
 class GfxObject:
-    id: str = None  # each object needs a string key
-    pos_size: pygame.Rect = None  # tuple (x,y, width, height)
-    attributes: dict = None  # dictionary of attributes {att:value}
+    id: str = None                  # each object needs a string key
+    pos_size: pygame.Rect = None    # tuple (x,y, width, height)
+    attributes: dict = None         # dictionary of attributes {att:value}
     surface: pygame.Surface = None  # pygame.Surface graphical repr.
-    key_binds: dict = None  # dictionary of keys {keyId:pygame.key_value}
+    key_binds: dict = None          # dictionary of keys {keyId:pygame.key_value}
 
     def __init__(self, stringId: str, x: int, y: int, w: int, h: int):
         """
@@ -39,6 +39,23 @@ class GfxObject:
          getter : Surface height
         """
         return self.pos_size[3]
+
+    def getPos(self) -> tuple :
+        """"
+          getter
+          :return (x,y) position tuple
+
+        """
+        return self.pos_size[:2] # return (x,y)
+
+    def setPos(self,newX:int,newY:int)->None:
+        """
+        Setter - changes (x,y) to (newX, newY)
+        :param newX: int
+        :param mnewY: int
+        :return: None
+        """
+        self.pos_size = (newX,newY,self.pos_size[2],self.pos_size[3])
 
     def addAttribute(self, anAtribute: str, aValue: any):
         """
