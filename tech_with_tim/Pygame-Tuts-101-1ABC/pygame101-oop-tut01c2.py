@@ -280,6 +280,10 @@ def drawRedFigure(width,height)->pygame.Surface:
 
 
 def main():
+    """
+    setup main game and populate game loop here using the World object
+
+    """
     world=World(800,600,"world-oop101c") #SVGA : 800x600
 
     redFig = GfxObject("redFigure",50,50,30,40) #create red rectangle object
