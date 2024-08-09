@@ -12,7 +12,7 @@ class GfxObject:
     pos_size: pygame.Rect = None    # tuple (x,y, width, height)
     attributes: dict = None         # dictionary of attributes {att:value}
     surface: pygame.Surface = None  # pygame.Surface graphical repr.
-    key_binds: dict = None          # dictionary of keys {keyId:pygame.key_value}
+    key_binds: dict = None          # dictionary of keys {keyId:[pygame.key_values]}
 
     def __init__(self, stringId: str, x: int, y: int, w: int, h: int):
         """
@@ -25,8 +25,8 @@ class GfxObject:
         """
         self.id = stringId
         self.pos_size = pygame.Rect(x, y, w, h)
-        self.attributes = {}  # custom associative array of attributes {attrib:value}
-        self.key_binds = {}  # custom associative array of key binds {keyString : []}
+        self.attributes = {}        # custom associative array of attributes {attrib:value}
+        self.key_binds = {}         # custom associative array of key binds {keyString : []}
 
     def width(self) -> int:
         """
@@ -102,8 +102,11 @@ class GfxObject:
         """
         win.blit(self.surface, self.pos_size[:2])  # (x,y)=(pos_size[0],pos_size[1])
 
-    def getKeyIdStrings(self):
-        "genrates keyIdStr "
+    def getKeyIdStrings(self)->list:
+        """genrates keyIdStr
+           Most actions provided
+           Can add to this list if more are required.
+        """
         keyIdStrings = ["left", "right", "up", "down", "jump", "fire", "fire2", "use", "duck"]
         return keyIdStrings
 
@@ -124,6 +127,7 @@ class GfxObject:
 
         if not keyIdStr in validKeyIds:
             print(f"Warning! {keyIdStr} not in {validKeyIds}")
+            print("add this keyIdString to the list in the method getKeyIdStrings()")
             print(f"Your keybind was not added to fgxObject {self.id}")
             return False
 
@@ -135,12 +139,16 @@ class GfxObject:
         self.key_binds[keyIdStr].append(pygameKey)
         return True
 
-    def wasPressed(self, keyId, keys: pygame.key) -> bool:
+    def wasPressed(self, keyId:str, keys: pygame.key) -> bool:
         """
          helper function returns True if
            keyId matches some bind key in the list
         """
         if not keyId in self.getKeyIdStrings():
+            print("wasPressed() warning!!!!")
+            print(f"   Invalid keyId string '{keyId}' used'")
+            print("    check handleKeyMovement() call is correct.")
+            print("    check list in getKeyIdStrings() values.")
             return False
 
         pressed = False
@@ -296,7 +304,7 @@ def main():
     setup main game and populate game loop here using the World object
 
     """
-    world = World(800, 600, "world-oop101c")  #SVGA : 800x600
+    world = World(800, 600, "world-oop101c2")  #SVGA : 800x600
 
     redFig = GfxObject("redFigure", 50, 50, 30, 40)  #create red rectangle object
 
@@ -308,10 +316,7 @@ def main():
     redFig.add_key_bind("left", pygame.K_a)
     redFig.add_key_bind("left", pygame.K_LEFT)
     redFig.add_key_bind("right", pygame.K_d)
-    redFig.add_key_bind("up", pygame.K_w)
-    redFig.add_key_bind("down", pygame.K_s)
-    redFig.add_key_bind("jump", pygame.K_SPACE)
-    redFig.add_key_bind("fire", pygame.K_RETURN)
+
 
     world.addObject(redFig)  # insert it into the world
 
