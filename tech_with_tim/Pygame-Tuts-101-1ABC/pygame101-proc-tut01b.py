@@ -25,6 +25,8 @@ def drawRedRec(x:int,y:int,width:int,height:int,colour:tuple=(255,0,0)):
 def main_loop(delay_ms):
     run = True
 
+
+
     while run:
         pygame.time.delay(delay_ms)
 
